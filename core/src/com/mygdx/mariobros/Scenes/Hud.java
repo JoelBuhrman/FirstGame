@@ -21,15 +21,16 @@ public class Hud implements Disposable{
     private Viewport viewport;
     private Integer worldTimer;
     private float timeCount;
-    private Integer scoore;
-    Label countDownLabel, scoreLabel, timeLabel, levelLabel,worldLabel, marioLabel;
+    private Integer score, highScore;
+    Label countDownLabel, scoreLabel, timeLabel, levelLabel,worldLabel, marioLabel, highScoreLabel, highScoreTitleLabel;
 
 
 
     public Hud(SpriteBatch sb){
         worldTimer = 300;
         timeCount = 0;
-        scoore=0;
+        score=0;
+        highScore=0;
 
         viewport= new FitViewport(MarioBros.V_WIDTH, MarioBros.V_HEIGHT, new OrthographicCamera());
         stage= new Stage(viewport, sb);
@@ -39,23 +40,31 @@ public class Hud implements Disposable{
         table.setFillParent(true);
 
 
-        scoreLabel = new Label(String.format("%06d", scoore), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
+        scoreLabel = new Label(String.format("%06d", score), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
         marioLabel = new Label(String.format("SCOORE"), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
+        highScoreLabel = new Label(String.format("%06d", highScore), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
+        highScoreTitleLabel = new Label(String.format("HIGHSCORE"), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
 
         table.add(marioLabel).expandX().pad(10);
-
+        table.add(highScoreTitleLabel).expandX().pad(10);
         table.row();
 
         table.add(scoreLabel).expandX();
+        table.add(highScoreLabel).expandX();
 
 
         stage.addActor(table);
 
     }
 
-    public void setScoore(int scoore){
-        this.scoore=scoore;
-        scoreLabel.setText(String.valueOf(scoore));
+    public void setScore(int score){
+        this.score=score;
+        scoreLabel.setText(String.valueOf(score));
+    }
+
+    public void setHighScore(int highScore){
+        this.highScore= highScore;
+        highScoreLabel.setText(String.valueOf(highScore));
     }
 
     @Override

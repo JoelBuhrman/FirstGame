@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -11,6 +12,9 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.mariobros.MarioBros;
@@ -23,12 +27,19 @@ import com.mygdx.mariobros.Tools.WorldContactListener;
  * Created by JoelBuhrman on 16-03-23.
  */
 public class PlayScreen implements Screen {
+    private Stage stage; //** stage holds the Button **//
+    private BitmapFont font;
+    private TextureAtlas buttonsAtlas; //** image of buttons **//
+    private Skin buttonSkin; //** images are used as skins of the button **//
+    private TextButton button;
+
     private TextureAtlas atlas;
     private MarioBros game;
     private Mario player;
     private Hud hud;
-    private int currentScoore = 0;
-    private int highestScoore = 0;
+    private int highScore;
+    private int currentScore = 0;
+    private int highestScore = 0;
     private OrthographicCamera gamecam;
     private Viewport gamePort;
     private TmxMapLoader mapLoader;
@@ -53,7 +64,7 @@ public class PlayScreen implements Screen {
         mapLoader = new TmxMapLoader();
 
         //Laddar in kartan för vår bana
-        map = mapLoader.load("level2.tmx");
+        map = mapLoader.load("level4.tmx");
 
         renderer = new OrthogonalTiledMapRenderer(map, 1 / MarioBros.PPM);
 
@@ -66,9 +77,15 @@ public class PlayScreen implements Screen {
         player = new Mario(world, this);
         //startposition för kameran
         gamecam.position.set(player.getX() + gamePort.getWorldHeight() / 2, player.getY(), 0);
-        hud.setScoore(currentScoore);
+        hud.setScore(currentScore);
+
         world.setContactListener(new WorldContactListener());
 
+    }
+
+    public void setHighScore(int highScore){
+        this.highScore= highScore;
+        hud.setHighScore(highScore);
     }
 
     public TextureAtlas getAtlas() {
@@ -83,18 +100,21 @@ public class PlayScreen implements Screen {
     public void update(float dt) {
         handleInput(dt);
 
-        currentScoore= (int) Math.round((currentHeight - (float)0.22499996)*(1/0.79999974));
-        if(currentScoore>highestScoore){
-            highestScoore=currentScoore;
+
+        currentScore = (int) Math.round((currentHeight - (float) 0.22499996) * (1 / 0.79999974));
+        if (currentScore > highestScore) {
+            highestScore = currentScore;
         }
+        if(highestScore>highScore){
+            highScore=highestScore;
+        }
+
 
         world.step(1 / 60f, 6, 2);
         player.update(dt);
 
 
         currentHeight = player.getCurrentHeight();
-
-
 
 
         //Så att kameran endast följer med om man inte trillar
@@ -111,15 +131,16 @@ public class PlayScreen implements Screen {
             GAMEOVER = true;
         }
         // System.out.println("p: " + player.previousState + " c: " + player.currentState);
-        hud.setScoore(highestScoore);
+        hud.setScore(highestScore);
+        hud.setHighScore(highScore);
         gamecam.update();
         renderer.setView(gamecam);
 
     }
 
     public void handleInput(float dt) {
-/*
-        //För dator
+
+     /*   //För dator
         if (!GAMEOVER) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.UP) && player.getState() != Mario.State.JUMPING && player.getState() != Mario.State.FALLING) {
                 heightBeforeJump = player.getCurrentHeight();
@@ -139,8 +160,8 @@ public class PlayScreen implements Screen {
                 player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
             }
 
-        }*/
-
+        }
+*/
 
 //För android:
 
@@ -210,6 +231,13 @@ public class PlayScreen implements Screen {
     @Override
     public void hide() {
 
+    }
+
+    public boolean isGameOver(){
+        return GAMEOVER;
+    }
+    public int getScore(){
+        return highestScore;
     }
 
     @Override
