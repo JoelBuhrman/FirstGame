@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="13" height="500" tilewidth="16" tileheight="16" nextobjectid="117">
+ <tileset firstgid="1" name="NES - Super Mario Bros - World 1-1" tilewidth="16" tileheight="16" spacing="2" margin="1" tilecount="4700" columns="188">
+  <image source="NES - Super Mario Bros - World 1-1.png" width="3392" height="460"/>
+ </tileset>
+ <layer name="Background" width="13" height="500">
+  <data encoding="base64" compression="zlib">
+   eJztwwEJAAAMA6AFePSFXo+jYC+pqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq6oMDHmYUQg==
+  </data>
+ </layer>
+ <layer name="Graphics" width="13" height="500">
+  <data encoding="base64" compression="zlib">
+   eJzt0bEJACAMBEB795/KpawEC0FSqBHuIJU+vLEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB+1Wr8vozMr5lxNk+Wbiczqzdn6fYqs9pHlm4nMrv/f9ntRiY6HRJqUEE=
+  </data>
+ </layer>
+ <objectgroup name="bricks">
+  <object id="110" x="0" y="7440" width="16" height="560"/>
+  <object id="111" x="0" y="7984" width="208" height="16"/>
+  <object id="112" x="192" y="7440" width="16" height="544"/>
+  <object id="113" x="32" y="7904" width="48" height="16"/>
+  <object id="114" x="112" y="7824" width="48" height="16"/>
+  <object id="115" x="48" y="7744" width="64" height="16"/>
+  <object id="116" x="96" y="7664" width="80" height="16"/>
+ </objectgroup>
+</map>
